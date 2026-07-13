@@ -1,0 +1,33 @@
+# Amprenta drona (aprox 40x40 cm)
+footprint: [[-0.2, -0.2], [-0.2, 0.2], [0.2, 0.2], [0.2, -0.2]]
+
+# Parametri detectie obstacole
+obstacle_range: 8.0   
+raytrace_range: 10.0  
+
+inflation_layer:
+  inflation_radius: 0.6  
+  cost_scaling_factor: 5.0
+
+# Surse observationale (LiDAR + Stereo)
+observation_sources: laser_scan_sensor camera_stereo_sensor
+
+# Configurare 2D/3D LiDAR (detectie trunchiuri/obstacole la sol)
+laser_scan_sensor: {
+  sensor_frame: velodyne_link, 
+  data_type: LaserScan, 
+  topic: /scan, 
+  marking: true, 
+  clearing: true
+}
+
+# Configurare pointcloud camera OAK-D (detectie obstacole aeriene/crengi)
+camera_stereo_sensor: {
+  sensor_frame: camera_link, 
+  data_type: PointCloud2, 
+  topic: /camera_stereo_lider/depth/points, 
+  marking: true, 
+  clearing: true,
+  min_obstacle_height: -0.1,  # Filtrare plan sol
+  max_obstacle_height: 3.0    # Plafon superior detectie volumetrica
+}
